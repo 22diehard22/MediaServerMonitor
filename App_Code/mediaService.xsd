@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="mediaService" targetNamespace="http://tempuri.org/mediaService.xsd" xmlns:mstns="http://tempuri.org/mediaService.xsd" xmlns="http://tempuri.org/mediaService.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="mediaService" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="mediaService" msprop:Generator_DataSetName="mediaService">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="supported" msprop:Generator_TableClassName="supportedDataTable" msprop:Generator_TableVarName="tablesupported" msprop:Generator_TablePropName="supported" msprop:Generator_RowDeletingName="supportedRowDeleting" msprop:Generator_RowChangingName="supportedRowChanging" msprop:Generator_RowEvHandlerName="supportedRowChangeEventHandler" msprop:Generator_RowDeletedName="supportedRowDeleted" msprop:Generator_UserTableName="supported" msprop:Generator_RowChangedName="supportedRowChanged" msprop:Generator_RowEvArgName="supportedRowChangeEvent" msprop:Generator_RowClassName="supportedRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_UserColumnName="id" type="xs:int" />
+              <xs:element name="name" msprop:Generator_ColumnVarNameInTable="columnname" msprop:Generator_ColumnPropNameInRow="name" msprop:Generator_ColumnPropNameInTable="nameColumn" msprop:Generator_UserColumnName="name" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="supportedKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:supported" />
+      <xs:field xpath="mstns:id" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>
