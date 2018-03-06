@@ -134,20 +134,23 @@ public partial class About : Page
             string rtnValue = Sonar.status(tbUrl.Text.ToString(), tbApiKey.Text.ToString());
             testJson.Text = rtnValue;
             downloadQueue.Text = Sonar.queue(tbUrl.Text.ToString(), tbApiKey.Text.ToString());
-            db.addUserDefinedServices("Sonarr", tbUrl.Text.ToString(), tbApiKey.Text.ToString());
+            db.addUserDefinedServices(ServiceType, tbUrl.Text.ToString(), tbApiKey.Text.ToString());
         }
         if (ServiceType == "Plex")
         {
-            db.addUserDefinedServices("Plex", tbUrl.Text.ToString(), tbApiKey.Text.ToString());
+            db.addUserDefinedServices(ServiceType, tbUrl.Text.ToString(), tbApiKey.Text.ToString());
         }
         if (ServiceType == "Radarr")
         {
-            db.addUserDefinedServices("Radarr", tbUrl.Text.ToString(), tbApiKey.Text.ToString());
+            db.addUserDefinedServices(ServiceType, tbUrl.Text.ToString(), tbApiKey.Text.ToString());
         }
         if (ServiceType == "Sabnzbd")
         {
-            db.addUserDefinedServices("Sabnzbd", tbUrl.Text.ToString(), tbApiKey.Text.ToString());
+            db.addUserDefinedServices(ServiceType, tbUrl.Text.ToString(), tbApiKey.Text.ToString());
         }
+        // TODO: Switch this to a switch statement. 
+
+
 
 
 

@@ -39,6 +39,7 @@ public class database
                 connection.Close(); // All opperations should be completed for the initilization of the database.
             }
             createServiceStatusTable(); // Creation code for our service Status table. 
+            createStatusCodeTable(); // Contains the status codes for the project
         }
     }
 
@@ -77,7 +78,6 @@ public class database
                 connection.Open(); // Create the following tables: 
                 command.CommandText = @"Select * FROM [UserDefinedServices]";
                 command.ExecuteNonQuery();
-
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -86,34 +86,64 @@ public class database
                     }
                     return (table);
                 }
-
             }
         }
     }
 
-    public string[] returnServiceInfo(int id)
+    public string[] returnServiceInfo(int id, string type = "default") 
     {
-        string[] rtnArray = new string[3];
-        using (var connection = new SQLiteConnection("data source=database.sqlite3.db"))
-        {
-            using (var command = new SQLiteCommand(connection))
-            {
-                connection.Open(); // Create the following tables: 
-                command.CommandText = @"Select * FROM [UserDefinedServices] where id =" + id;
-                command.ExecuteNonQuery();
-
-                using (var reader = command.ExecuteReader())
+        switch (type)
+        {   
+            case "address":
                 {
-                    while (reader.Read())
+                    string[] rtnArray = new string[1];
+                    using (var connection = new SQLiteConnection("data source=database.sqlite3.db"))
                     {
-                        rtnArray[0] = reader["Name"].ToString();
-                        rtnArray[1] = reader["URL"].ToString();
-                        rtnArray[2] = reader["apiKey"].ToString();
+                        using (var command = new SQLiteCommand(connection))
+                        {
+                            connection.Open(); // Create the following tables: 
+                            command.CommandText = @"Select * FROM [UserDefinedServices] where id =" + id;
+                            command.ExecuteNonQuery();
+
+                            using (var reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    rtnArray[0] = reader["URL"].ToString();
+                                }
+                                return (rtnArray);
+                               
+                            }
+                        }
                     }
-                    return (rtnArray);
                 }
-            }
+            default: // Return all options in array if type is not defined.  "Default" should also go here. 
+                {
+                    string[] rtnArray = new string[3];
+                    using (var connection = new SQLiteConnection("data source=database.sqlite3.db"))
+                    {
+                        using (var command = new SQLiteCommand(connection))
+                        {
+                            connection.Open(); // Create the following tables: 
+                            command.CommandText = @"Select * FROM [UserDefinedServices] where id =" + id;
+                            command.ExecuteNonQuery();
+
+                            using (var reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    rtnArray[0] = reader["Name"].ToString();
+                                    rtnArray[1] = reader["URL"].ToString(); //pingWebHost(int id) relies on this array position to work. 
+                                    rtnArray[2] = reader["apiKey"].ToString();
+                                }
+                                return (rtnArray);
+                            }
+                        }
+                    }
+                }
+
         }
+
     }
 
 
@@ -140,11 +170,53 @@ public class database
                 command.CommandText = @"CREATE TABLE IF NOT EXISTS[serviceStatus](
                        [ID] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                        [serviceFK] INTEGER NOT NULL,
-                       [Name] NVARCHAR(2048)  NULL)";
+                       [statusFK] INTEGER NOT NULL,
+                       [eventTime] DATE  NULL)";
                 command.ExecuteNonQuery();
             }
             connection.Close(); // All opperations should be completed for the initilization of the database.
         }
     }
+
+    public void createStatusCodeTable()
+    {
+        using (var connection = new SQLiteConnection("data source=database.sqlite3.db"))
+        {
+            using (var command = new SQLiteCommand(connection))
+            {
+                connection.Open(); // Create the following tables: 
+                command.CommandText = @"CREATE TABLE IF NOT EXISTS[StatusReason](
+                       [ID] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                       [Name] NVARCHAR(2048)  NULL,
+                       [Description] NVARCHAR(2048)  NULL)";
+                command.ExecuteNonQuery();
+
+
+                // Create a dictionary for all the status codes. 
+                Dictionary<string, string> statusCodes = new Dictionary<string, string>();
+                statusCodes.Add("pingSuccess", "System replied succesfully to ping request");
+                statusCodes.Add("pingFail", "System failed to reply to ping request");
+
+
+                foreach(KeyValuePair<string, string> entry in statusCodes)
+                {
+                    // Populate table with data: 
+                    command.CommandText = @"INSERT INTO [StatusReason] (Name, Description) VALUES('"+entry.Key+ "','" + entry.Value + "')";
+                    command.ExecuteNonQuery();
+                }
+
+
+            
+
+
+
+            }
+            connection.Close(); // All opperations should be completed for the initilization of the database.
+        }
+    }
+
+
+
+
 
 }
